@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question & Answer Blog</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<style>
+/* ... Your existing CSS styles ... */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+#ask-question, #answered-questions {
+    margin-bottom: 20px;
+}
+
+h2 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input, button {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+li:last-child {
+    margin-bottom: 0;
+}
+
+</style>
+<script>
+// ... Your existing JavaScript code ...
+// Sample data for answered questions (you can replace this with your server/backend logic)
+const answeredQuestions = [
+    { question: "Why is extrme", name: "Devjeet Biswas" },
+    { question: "Can we trust on extrme", name: "Chandan kumar.Y" },
+    // Add more questions here...
+];
+
+// Function to render answered questions on the page
+function renderQuestions() {
+    const questionsList = document.getElementById("questions-list");
+    questionsList.innerHTML = "";
+
+    answeredQuestions.forEach((qna) => {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `<strong>${qna.name}</strong>: ${qna.question}`;
+        questionsList.appendChild(listItem);
+    });
+}
+
+// Function to handle form submission
+function handleSubmit(event) {
+    event.preventDefault();
+    const questionInput = document.getElementById("question");
+    const nameInput = document.getElementById("name");
+
+    const question = questionInput.value;
+    const name = nameInput.value;
+
+    // Add the new question to the answeredQuestions array (you can send this to the server/backend instead)
+    answeredQuestions.push({ question, name });
+
+    // Clear the form inputs
+    questionInput.value = "";
+    nameInput.value = "";
+
+    // Re-render the questions list
+    renderQuestions();
+}
+
+// Event listener for form submission
+document.querySelector("form").addEventListener("submit", handleSubmit);
+
+// Initial render of questions
+renderQuestions();
+
+// Function to handle form submission
+function handleSubmit(event) {
+    event.preventDefault();
+    const questionInput = document.getElementById("question");
+    const nameInput = document.getElementById("name");
+
+    const question = questionInput.value;
+    const name = nameInput.value;
+
+    // Add the new question to the answeredQuestions array
+    answeredQuestions.push({ question, name });
+
+    // Clear the form inputs
+    questionInput.value = "";
+    nameInput.value = "";
+
+    // Re-render the questions list
+    renderQuestions();
+
+    // Send the question to the specified email address
+    sendEmail(question, name);
+}
+
+// Function to send the question to the specified email address
+function sendEmail(question, name) {
+    const email = 'ssybrand58@gmail.com'; // Replace with your Gmail address
+    const subject = 'New Question from ' + name;
+    const body = 'Question: ' + question + '\n\nName: ' + name;
+
+    // Construct the mailto link
+    const mailtoLink = 'mailto:' + email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+
+    // Create a temporary link element to trigger the email client
+    const link = document.createElement('a');
+    link.href = mailtoLink;
+    link.style.display = 'none';
+
+    // Append the link to the document and click it to open the email client
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up
+    document.body.removeChild(link);
+}
+</script>
+<body>
+    <header>
+        <h1>Extrme Review</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Ask a Question</h2>
+            <form onsubmit="handleSubmit(event)">
+                <input type="text" id="question" placeholder="Your question..." required>
+                <input type="text" id="name" placeholder="Your name..." required>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+        <section id="answered-questions">
+            <h2>Answered Questions</h2>
+            <ul id="questions-list">
+                <!-- Questions will be dynamically added here using JavaScript -->
+            </ul>
+        </section>
+    </main>
+</body>
+</html>
